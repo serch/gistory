@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'gistory'
+
+Gistory::History.new(repo: Gistory::GitRepo.new(dir: '.'), args: ARGV).run
