@@ -1,3 +1,5 @@
+require 'date'
+
 module Gistory
   class GitRepo
     Change = Struct.new(:commit, :date)
@@ -11,7 +13,7 @@ module Gistory
       commits_and_dates = `git log --pretty=format:"%H|%cD" --max-count=100 --follow Gemfile.lock`
       changes = commits_and_dates.split("\n").map do |line|
         commit_hash, date = line.split('|')
-        Change.new(commit_hash, date)
+        Change.new(commit_hash, DateTime.parse(date))
       end
       changes
     end
