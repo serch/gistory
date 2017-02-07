@@ -26,7 +26,7 @@ module Gistory
       puts ''
 
       puts 'Change history:'
-      puts "#{gem_spec.version} on #{latest.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{latest.commit[0..6]})"
+      puts "#{gem_spec.version} on #{latest.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{latest.commit})"
       previous_version = gem_spec.version
       lockfile_changes.each do |change|
         lockfile = Bundler::LockfileParser.new(@repo.lockfile_for_commit(change.commit))
@@ -39,7 +39,7 @@ module Gistory
         # only print it if it changed
         if gem_spec.version.to_s != previous_version
           previous_version = gem_spec.version.to_s
-          puts "#{gem_spec.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.commit[0..6]})"
+          puts "#{gem_spec.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.commit})"
         end
       end
     end
