@@ -1,4 +1,4 @@
 Ideas:
 
-- use red for change sin the major version, blue for changes in the minor version
+- use red for changes in the major version, blue for changes in the minor version
 - support subversion, mercurial, etc.

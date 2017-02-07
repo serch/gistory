@@ -1,6 +1,6 @@
 # Gistory
 
-If you use bundler and git, and want to know when exactly a gem you are using was updated, `gistory` comes to your recues, simply:
+If you use bundler and git, and want to know when exactly a gem you are using was updated, `gistory` comes to your rescue, simply:
 
 ```shell
 gem install gistory
