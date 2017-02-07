@@ -24,11 +24,8 @@ module Gistory
         # what if it was added then removed and then added again???
         break if gem_spec.nil?
 
-        if previous_version.nil?
-          version_changes << VersionChange.new(change.commit, change.date, gem_spec.version)
-          previous_version = gem_spec.version.to_s
-        elsif gem_spec.version.to_s != previous_version
-          # only save it if it changed
+        # only save it if the version changed
+        unless gem_spec.version.to_s == previous_version
           version_changes << VersionChange.new(change.commit, change.date, gem_spec.version)
           previous_version = gem_spec.version.to_s
         end
