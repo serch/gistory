@@ -15,36 +15,31 @@ module Gistory
 
     def history(gem_name)
       raise(Gistory::Error, 'No gem name provided') if gem_name.nil?
-
       puts "Gem: #{gem_name}"
-      lockfile = Bundler::LockfileParser.new(Bundler.read_file('Gemfile.lock'))
-      the_gem  = lockfile.specs.find { |s| s.name == gem_name }
-      puts "Current version: #{the_gem.version}"
+
+      lockfile_changes = @repo.lockfile_changes
+
+      latest = lockfile_changes.shift
+      lockfile = Bundler::LockfileParser.new(@repo.lockfile_for_commit(latest.commit))
+      gem_spec = lockfile.specs.find { |spec| spec.name == gem_name }
+      puts "Current version: #{gem_spec.version}"
       puts ''
 
       puts 'Change history:'
-      previous_version = nil
-      commits = `git log --pretty=format:"%H|%cD" --max-count=100 --follow Gemfile.lock`
-      commits.split("\n").each do |c|
-        commit, date = c.split('|')
-        file_content = `git show #{commit}:Gemfile.lock`
-        lockfile = Bundler::LockfileParser.new(file_content)
-        the_gem = lockfile.specs.find { |s| s.name == gem_name }
+      puts "#{gem_spec.version} on #{latest.date} (commit #{latest.commit[0..6]})"
+      previous_version = gem_spec.version
+      lockfile_changes.each do |change|
+        lockfile = Bundler::LockfileParser.new(@repo.lockfile_for_commit(change.commit))
+        gem_spec = lockfile.specs.find { |spec| spec.name == gem_name }
 
         # we got to the end, the gem didnt exist back then
         # what if it was added then removed and then added again???
-        if the_gem.nil?
-          puts 'the end'
-          break
-        end
+        break if gem_spec.nil?
 
-        if previous_version.nil?
-          # first commit
-          previous_version = the_gem.version.to_s
-          puts "#{the_gem.version} on #{date} (commit #{commit[0..6]})"
-        elsif the_gem.version.to_s != previous_version # only print it if it changed
-          previous_version = the_gem.version.to_s
-          puts "#{the_gem.version} on #{date} (commit #{commit[0..6]})"
+        # only print it if it changed
+        if gem_spec.version.to_s != previous_version
+          previous_version = gem_spec.version.to_s
+          puts "#{gem_spec.version} on #{change.date} (commit #{change.commit[0..6]})"
         end
       end
     end
