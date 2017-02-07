@@ -2,6 +2,7 @@ require 'bundler'
 
 module Gistory
   class ChangeLog
+    LOCKFILE = 'Gemfile.lock'.freeze
     VersionChange = Struct.new(:commit, :date, :version)
 
     def initialize(repo:)
@@ -12,8 +13,11 @@ module Gistory
       version_changes = []
       previous_version = nil
 
-      @repo.lockfile_changes.each do |change|
-        lockfile = Bundler::LockfileParser.new(@repo.lockfile_for_commit(change.commit))
+      lockfile_changes = @repo.changes_to_file(LOCKFILE)
+
+      lockfile_changes.each do |change|
+        lockfile_content = @repo.file_content_at_commit(change.commit, LOCKFILE)
+        lockfile = Bundler::LockfileParser.new(lockfile_content)
         gem_spec = lockfile.specs.find { |spec| spec.name == gem_name }
 
         # we got to the end, the gem didnt exist back then
