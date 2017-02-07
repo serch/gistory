@@ -1,4 +1,4 @@
-require "gistory/version"
+require 'gistory/version'
 
 module Gistory
   # Your code goes here...
