@@ -3,3 +3,10 @@ Metrics/LineLength:
 
 Documentation:
   Enabled: false
+
+Metrics/AbcSize:
+  # The ABC size is a calculated magnitude, so this number can be a Fixnum or a Float.
+  # http://c2.com/cgi/wiki?AbcMetric
+  Max: 20
+  Exclude:
+    - 'test/**/*_test.rb' # ignore tests which typically have high B count due to many asserts
