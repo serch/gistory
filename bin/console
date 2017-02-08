@@ -2,6 +2,23 @@
 
 require 'bundler/setup'
 require 'gistory'
-
 require 'pry'
+
+root_path = "#{File.dirname(__FILE__)}/.."
+
+# require all files in lib for quick access to them in the console
+Dir["#{root_path}/lib/**/*.rb"].each { |file| require file }
+
+def reload!
+  verbosity = $VERBOSE
+  begin
+    $VERBOSE = nil
+    files = $LOADED_FEATURES.select { |feat| feat =~ %r{/gistory/} }
+    files.each { |file| load(file) }
+  ensure
+    $VERBOSE = verbosity
+  end
+  true
+end
+
 Pry.start
