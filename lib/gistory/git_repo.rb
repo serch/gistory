@@ -2,8 +2,8 @@ require 'date'
 
 module Gistory
   class GitRepo
-    def initialize(dir:)
-      unless Dir.exist?(File.join(dir, '.git'))
+    def initialize(path:)
+      unless Dir.exist?(File.join(path, '.git'))
         raise(Gistory::Error, 'This is not a valid git repository')
       end
       unless git_cli_available?

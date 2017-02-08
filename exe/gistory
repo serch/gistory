@@ -5,5 +5,4 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'gistory'
 
-# do i need the repo here???
-Gistory::Cli.new(repo: Gistory::GitRepo.new(dir: '.'), args: ARGV).run
+Gistory::Cli::Main.new(repo_path: Dir.getwd, args: ARGV).run
