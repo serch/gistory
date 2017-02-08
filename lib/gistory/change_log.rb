@@ -3,7 +3,6 @@ require 'bundler'
 module Gistory
   class ChangeLog
     LOCKFILE = 'Gemfile.lock'.freeze
-    VersionChange = Struct.new(:commit, :date, :version)
 
     def initialize(repo:)
       @repo = repo
@@ -15,8 +14,8 @@ module Gistory
 
       lockfile_changes = @repo.changes_to_file(LOCKFILE)
 
-      lockfile_changes.each do |change|
-        lockfile_content = @repo.file_content_at_commit(change.commit, LOCKFILE)
+      lockfile_changes.each do |commit|
+        lockfile_content = @repo.file_content_at_commit(commit.short_hash, LOCKFILE)
         lockfile = Bundler::LockfileParser.new(lockfile_content)
         gem_spec = lockfile.specs.find { |spec| spec.name == gem_name }
 
@@ -26,7 +25,7 @@ module Gistory
 
         # only save it if the version changed
         unless gem_spec.version.to_s == previous_version
-          version_changes << VersionChange.new(change.commit, change.date, gem_spec.version)
+          version_changes << VersionChange.new(commit: commit, version: gem_spec.version)
           previous_version = gem_spec.version.to_s
         end
       end

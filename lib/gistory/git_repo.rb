@@ -2,8 +2,6 @@ require 'date'
 
 module Gistory
   class GitRepo
-    Change = Struct.new(:commit, :date)
-
     def initialize(dir:)
       @dir = dir
       # TODO: check it valid git repo
@@ -13,7 +11,7 @@ module Gistory
       commits_and_dates = `git log --pretty=format:"%h|%cD" --max-count=100 --follow #{filename}`
       changes = commits_and_dates.split("\n").map do |line|
         commit_hash, date = line.split('|')
-        Change.new(commit_hash, DateTime.parse(date))
+        Commit.new(short_hash: commit_hash, date: DateTime.parse(date))
       end
       changes
     end

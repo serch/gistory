@@ -21,7 +21,7 @@ module Gistory
 
       puts 'Change history:'
       changes.each do |change|
-        puts "#{change.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.commit})"
+        puts "#{change.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.short_hash})"
       end
     end
   end
