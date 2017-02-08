@@ -1,6 +1,3 @@
-require 'optparse'
-require 'ostruct'
-
 module Gistory
   class Cli
     def initialize(repo:, args:)
@@ -9,17 +6,22 @@ module Gistory
     end
 
     def run
-      options = ArgParser.new(args: @args).parse!
-      history(options.gem_name)
+      config = ArgParser.new(args: @args).parse!
+      history(config.gem_name)
     rescue Gistory::Error => error
       puts error.message
     end
 
     def history(gem_name)
       raise(Gistory::Error, 'No gem name provided') if gem_name.nil?
-      puts "Gem: #{gem_name}"
-
       changes = ChangeLog.new(repo: @repo).changelog_for_gem(gem_name)
+
+      if changes.empty?
+        puts "Gem #{gem_name} not found in lock file, maybe a typo?"
+        return
+      end
+
+      puts "Gem: #{gem_name}"
       puts "Current version: #{changes.first.version}"
       puts ''
 

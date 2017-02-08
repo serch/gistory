@@ -1,3 +1,6 @@
+require 'optparse'
+require 'ostruct'
+
 module Gistory
   class ArgParser
     def initialize(args:)
@@ -5,19 +8,18 @@ module Gistory
     end
 
     def parse!
-      options = OpenStruct.new
-      options.max_lockfile_changes = 100
+      config = Gistory.config
 
-      opt_parser = parser(options)
+      opt_parser = parser(config)
       opt_parser.parse!(@args)
 
       gem_name = @args.pop
       raise 'no gem name specified' unless gem_name
-      options.gem_name = gem_name
-      options
+      config.gem_name = gem_name
+      config
     end
 
-    def parser(options)
+    def parser(config)
       opts = OptionParser.new
       opts.banner = 'Usage: gistory <gem_name> [options]'
 
@@ -25,7 +27,7 @@ module Gistory
       opts.separator 'Specific options:'
 
       opts.on('-m', '--max-lockfile-changes [INTEGER]', Integer, 'max number of changes to the lock file (default 100)') do |m|
-        options.max_lockfile_changes = m
+        config.max_lockfile_changes = m
       end
 
       opts.separator ''
