@@ -10,3 +10,6 @@ Metrics/AbcSize:
   Max: 20
   Exclude:
     - 'test/**/*_test.rb' # ignore tests which typically have high B count due to many asserts
+
+Metrics/MethodLength:
+  Max: 15

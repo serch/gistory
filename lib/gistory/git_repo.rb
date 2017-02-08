@@ -5,12 +5,8 @@ require 'english'
 module Gistory
   class GitRepo
     def initialize(path:)
-      unless Dir.exist?(File.join(path, '.git'))
-        raise(Gistory::Error, 'This is not a valid git repository')
-      end
-      unless git_cli_available?
-        raise(Gistory::Error, 'git is not available, please install it')
-      end
+      raise(Gistory::Error, 'This is not a valid git repository') unless Dir.exist?(File.join(path, '.git'))
+      raise(Gistory::Error, 'git is not available, please install it') unless git_cli_available?
     end
 
     def changes_to_file(filename)
