@@ -8,5 +8,4 @@ require 'gistory/change_log'
 require 'gistory/history'
 
 module Gistory
-  # Your code goes here...
 end
