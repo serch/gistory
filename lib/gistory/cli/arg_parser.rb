@@ -5,31 +5,27 @@ module Gistory
     class ArgParser
       def initialize(args:)
         @args = args
+        @config = Gistory.config
+        @parser = create_parser(@config)
+      end
+
+      def to_s
+        @parser.to_s
       end
 
       def parse
-        config = Gistory.config
+        @parser.parse!
 
-        parser = create_parser(config)
-        parser.parse!(@args)
-
-        parse_gem_name(parser, config)
-        config
+        parse_gem_name
+        @config
       rescue OptionParser::InvalidOption
-        error_and_exit('Invalid option', parser)
+        raise(Gistory::ParserError, 'Invalid option')
       end
 
-      def error_and_exit(msg, parser)
-        puts msg
-        puts ''
-        puts parser
-        exit
-      end
-
-      def parse_gem_name(parser, config)
+      def parse_gem_name
         gem_name = @args.shift
-        error_and_exit('No gem specified', parser) unless gem_name
-        config.gem_name = gem_name
+        raise(Gistory::ParserError, 'No gem specified') unless gem_name
+        @config.gem_name = gem_name
       end
 
       def create_parser(config)

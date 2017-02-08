@@ -1,3 +1,5 @@
+require 'colorize'
+
 module Gistory
   module Cli
     class Main
@@ -8,18 +10,21 @@ module Gistory
 
       def run
         repo = GitRepo.new(path: @repo_path)
-        config = Cli::ArgParser.new(args: @args).parse
+        parser = Cli::ArgParser.new(args: @args)
+        config = parser.parse
         history(repo, config.gem_name)
+      rescue Gistory::ParserError => error
+        puts error.message.red
+        puts parser
       rescue Gistory::Error => error
-        puts error.message
+        puts error.message.red
       end
 
       def history(repo, gem_name)
         changes = ChangeLog.new(repo: repo).changelog_for_gem(gem_name)
 
         if changes.empty?
-          puts "Gem #{gem_name} not found in lock file, maybe a typo?"
-          exit
+          raise(Gistory::Error, "Gem '#{gem_name}' not found in lock file, maybe a typo?")
         end
 
         puts "Gem: #{gem_name}"
