@@ -6,7 +6,7 @@ module Gistory
     end
 
     def run
-      config = ArgParser.new(args: @args).parse!
+      config = ArgParser.new(args: @args).parse
       history(config.gem_name)
     rescue Gistory::Error => error
       puts error.message

@@ -6,19 +6,29 @@ module Gistory
       @args = args
     end
 
-    def parse!
+    def parse
       config = Gistory.config
 
       parser = create_parser(config)
       parser.parse!(@args)
 
-      gem_name = @args.shift
-      raise 'no gem name specified' unless gem_name
-      config.gem_name = gem_name
+      parse_gem_name(parser, config)
       config
     rescue OptionParser::InvalidOption
+      error_and_exit('Invalid option', parser)
+    end
+
+    def error_and_exit(msg, parser)
+      puts msg
+      puts ''
       puts parser
       exit
+    end
+
+    def parse_gem_name(parser, config)
+      gem_name = @args.shift
+      error_and_exit('No gem specified', parser) unless gem_name
+      config.gem_name = gem_name
     end
 
     def create_parser(config)
@@ -35,7 +45,8 @@ module Gistory
       parser.separator ''
       parser.separator 'Specific options:'
 
-      parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, 'max number of changes to the lock file (default 100)') do |m|
+      default = config.max_lockfile_changes
+      parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, "max number of changes to the lock file (default #{default})") do |m|
         config.max_lockfile_changes = m
       end
     end
@@ -45,7 +56,7 @@ module Gistory
       parser.separator 'Common options:'
 
       parser.on_tail('-h', '--help', 'Show this message') do
-        puts opts
+        puts parser
         exit
       end
 
