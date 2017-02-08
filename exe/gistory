@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 require 'gistory'
 
-Gistory::History.new(repo: Gistory::GitRepo.new(dir: '.'), args: ARGV).run
+Gistory::Cli::Main.new(repo_path: Dir.getwd, args: ARGV).run

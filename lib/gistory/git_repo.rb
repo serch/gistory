@@ -2,13 +2,22 @@ require 'date'
 
 module Gistory
   class GitRepo
-    def initialize(dir:)
-      @dir = dir
-      # TODO: check it valid git repo
+    def initialize(path:)
+      unless Dir.exist?(File.join(path, '.git'))
+        raise(Gistory::Error, 'This is not a valid git repository')
+      end
+      unless git_cli_available?
+        raise(Gistory::Error, 'git is not available, please install it')
+      end
+    end
+
+    def git_cli_available?
+      system('which git > /dev/null 2>&1')
     end
 
     def changes_to_file(filename)
-      hashes_and_dates = git("log --pretty=format:'%h|%cD' --max-count=100 --follow #{filename}")
+      max_count = Gistory.config.max_lockfile_changes
+      hashes_and_dates = git("log --pretty=format:'%h|%cD' --max-count=#{max_count} --follow #{filename}")
       to_commits(hashes_and_dates.split("\n"))
     end
 
