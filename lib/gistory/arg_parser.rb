@@ -1,5 +1,4 @@
 require 'optparse'
-require 'ostruct'
 
 module Gistory
   class ArgParser
@@ -10,40 +9,50 @@ module Gistory
     def parse!
       config = Gistory.config
 
-      opt_parser = parser(config)
-      opt_parser.parse!(@args)
+      parser = create_parser(config)
+      parser.parse!(@args)
 
-      gem_name = @args.pop
+      gem_name = @args.shift
       raise 'no gem name specified' unless gem_name
       config.gem_name = gem_name
       config
+    rescue OptionParser::InvalidOption
+      puts parser
+      exit
     end
 
-    def parser(config)
-      opts = OptionParser.new
-      opts.banner = 'Usage: gistory <gem_name> [options]'
+    def create_parser(config)
+      parser = OptionParser.new
+      parser.banner = 'Usage: gistory <gem_name> [options]'
 
-      opts.separator ''
-      opts.separator 'Specific options:'
+      add_specific_options(parser, config)
+      add_common_options(parser)
 
-      opts.on('-m', '--max-lockfile-changes [INTEGER]', Integer, 'max number of changes to the lock file (default 100)') do |m|
+      parser
+    end
+
+    def add_specific_options(parser, config)
+      parser.separator ''
+      parser.separator 'Specific options:'
+
+      parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, 'max number of changes to the lock file (default 100)') do |m|
         config.max_lockfile_changes = m
       end
+    end
 
-      opts.separator ''
-      opts.separator 'Common options:'
+    def add_common_options(parser)
+      parser.separator ''
+      parser.separator 'Common options:'
 
-      opts.on_tail('-h', '--help', 'Show this message') do
+      parser.on_tail('-h', '--help', 'Show this message') do
         puts opts
         exit
       end
 
-      opts.on_tail('--version', 'Show version') do
+      parser.on_tail('--version', 'Show version') do
         puts Gistory::VERSION
         exit
       end
-
-      opts
     end
   end
 end
