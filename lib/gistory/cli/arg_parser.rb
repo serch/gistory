@@ -10,10 +10,6 @@ module Gistory
         @parser = create_parser(@config)
       end
 
-      def to_s
-        @parser.to_s
-      end
-
       def parse
         @parser.parse!
 
@@ -22,6 +18,12 @@ module Gistory
       rescue OptionParser::InvalidOption
         raise(Gistory::ParserError, 'Invalid option')
       end
+
+      def to_s
+        @parser.to_s
+      end
+
+      private
 
       def parse_gem_name
         gem_name = @args.shift

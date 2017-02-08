@@ -21,6 +21,8 @@ module Gistory
         puts error.message.red
       end
 
+      private
+
       def history(repo, gem_name)
         changes = ChangeLog.new(repo: repo).changelog_for_gem(gem_name)
 
