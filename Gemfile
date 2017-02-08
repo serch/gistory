@@ -1,4 +1,14 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in gistory.gemspec
 gemspec
+
+group :development, :test do
+  gem 'byebug' # debugger
+  gem 'pry' # better console
+  gem 'pry-byebug' # pry integration for byebug
+end
+
+group :test do
+  gem 'flexmock' # mock object
+  gem 'simplecov', require: false # code coverage
+end
