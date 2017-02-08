@@ -5,7 +5,7 @@ module Gistory
 
     def initialize(short_hash:, date:)
       @short_hash = short_hash
-      @date = date
+      @date = DateTime.parse(date.to_s)
       freeze
     end
   end

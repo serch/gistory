@@ -15,7 +15,7 @@ module Gistory
       lockfile_changes = @repo.changes_to_file(LOCKFILE)
 
       lockfile_changes.each do |commit|
-        gem_spec = gem_spec_at_commit_hash(commit.short_hash)
+        gem_spec = gem_spec_at_commit_hash(commit.short_hash, gem_name)
 
         # we reached the end, the gem didn't exist back then
         # TODO: what if it was added then removed and then added again?
@@ -33,7 +33,7 @@ module Gistory
 
     private
 
-    def gem_spec_at_commit_hash(commit_hash)
+    def gem_spec_at_commit_hash(commit_hash, gem_name)
       lockfile_content = @repo.file_content_at_commit(commit_hash, LOCKFILE)
       lockfile = Bundler::LockfileParser.new(lockfile_content)
       gem_spec = lockfile.specs.find { |spec| spec.name == gem_name }

@@ -32,7 +32,7 @@ module Gistory
     def to_commits(hashes_and_dates)
       hashes_and_dates.map do |hash_and_date|
         commit_hash, date = hash_and_date.split('|')
-        Commit.new(short_hash: commit_hash, date: DateTime.parse(date))
+        Commit.new(short_hash: commit_hash, date: date)
       end
     end
 
