@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 require 'date'
+require 'english'
 
 module Gistory
   class GitRepo
@@ -33,7 +35,9 @@ module Gistory
     end
 
     def git(command)
-      `git #{command}`
+      out = `git #{command}`
+      raise('Git CLI command failed') unless $CHILD_STATUS.success?
+      out
     end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Gistory
   class Commit
     attr_reader :short_hash, :date
