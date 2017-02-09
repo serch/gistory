@@ -1,24 +1,24 @@
 # frozen_string_literal: true
-require 'colorize'
 
 module Gistory
   module Cli
     class Main
-      def initialize(repo_path:, args:)
+      def initialize(repo_path:, args:, io: Gistory::Cli::Io.new)
         @repo_path = repo_path
         @args = args
+        @io = io
       end
 
       def run
         repo = GitRepo.new(path: @repo_path)
-        parser = Cli::ArgParser.new(args: @args)
+        parser = Cli::ArgParser.new(args: @args, io: @io)
         config = parser.parse
         history(repo, config.gem_name)
       rescue Gistory::ParserError => error
-        puts error.message.red
-        puts parser
+        @io.error error.message
+        @io.puts parser
       rescue Gistory::Error => error
-        puts error.message.red
+        @io.error error.message
       end
 
       private
@@ -30,13 +30,13 @@ module Gistory
           raise(Gistory::Error, "Gem '#{gem_name}' not found in lock file, maybe a typo?")
         end
 
-        puts "Gem: #{gem_name}"
-        puts "Current version: #{changes.first.version}"
-        puts ''
+        @io.puts "Gem: #{gem_name}"
+        @io.puts "Current version: #{changes.first.version}"
+        @io.puts ''
 
-        puts 'Change history:'
+        @io.puts 'Change history:'
         changes.each do |change|
-          puts "#{change.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.short_hash})"
+          @io.puts "#{change.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.short_hash})"
         end
       end
     end

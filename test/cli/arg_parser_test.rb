@@ -25,14 +25,21 @@ module Gistory
       end
 
       def test_raises_no_gem
-        parser = ArgParser.new(args: ['-max-lockfile-changes=10'])
+        parser = ArgParser.new(args: ['--max-lockfile-changes', '10'])
         assert_raises do
           parser.parse
         end
       end
 
       def test_raises_invalid_args
-        parser = ArgParser.new(args: ['mygem', '-max-lockfile-changes=10', '-z1'])
+        parser = ArgParser.new(args: ['mygem', '-m10', '-z1'])
+        assert_raises Gistory::ParserError do
+          parser.parse
+        end
+      end
+
+      def test_raises_max_lockfile_changes_non_integer
+        parser = ArgParser.new(args: ['mygem', '-mA'])
         assert_raises Gistory::ParserError do
           parser.parse
         end
