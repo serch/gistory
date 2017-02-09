@@ -1,6 +1,7 @@
 # Gistory
 
 [![Build Status](https://travis-ci.org/serch/gistory.svg?branch=master)](https://travis-ci.org/serch/gistory)
+[![Coverage Status](https://coveralls.io/repos/github/serch/gistory/badge.svg?branch=master)](https://coveralls.io/github/serch/gistory?branch=master)
 
 If you use bundler and git, and want to know when a gem you are using was updated, `gistory` comes to your rescue, simply:
 
