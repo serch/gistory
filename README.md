@@ -1,5 +1,6 @@
 # Gistory
 
+[![Gem Version](https://badge.fury.io/rb/gistory.svg)](https://rubygems.org/gems/gistory)
 [![Build Status](https://travis-ci.org/serch/gistory.svg?branch=master)](https://travis-ci.org/serch/gistory)
 [![Coverage Status](https://coveralls.io/repos/github/serch/gistory/badge.svg?branch=master)](https://coveralls.io/github/serch/gistory?branch=master)
 
