@@ -3,6 +3,7 @@ require 'gistory/version'
 
 require 'gistory/cli/main'
 require 'gistory/cli/arg_parser'
+require 'gistory/cli/io'
 require 'gistory/configuration'
 
 require 'gistory/errors'

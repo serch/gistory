@@ -4,16 +4,18 @@ require 'optparse'
 module Gistory
   module Cli
     class ArgParser
-      def initialize(args:)
+      def initialize(args:, io: Gistory::Cli::Io.new)
         @args = args
         @config = Gistory.config
         @parser = create_parser(@config)
+        @io = io
       end
 
       def parse
         @parser.parse!(@args)
 
         parse_gem_name
+        @io.error("extra parameters ignored: #{@args}") unless @args.count.zero?
         @config
       rescue OptionParser::InvalidOption => err
         raise(Gistory::ParserError, err.message)
@@ -60,20 +62,21 @@ module Gistory
         default = config.max_lockfile_changes
         description = "max number of changes to the lock file (default #{default})"
         parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, description) do |m|
+          raise(Gistory::ParserError, 'argument --max-lockfile-changes must be an integer') if m.nil?
           config.max_lockfile_changes = m
         end
       end
 
       def add_help(parser)
         parser.on_tail('-h', '--help', 'Show this message') do
-          puts parser
+          @io.puts parser
           exit
         end
       end
 
       def add_version(parser)
         parser.on_tail('--version', 'Show version') do
-          puts Gistory::VERSION
+          @io.puts "gistory version #{Gistory::VERSION}"
           exit
         end
       end
