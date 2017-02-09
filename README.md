@@ -32,4 +32,9 @@ only show the latest version changes up until it was removed.
 
 ## Roadmap
 
-Check [ROADMAP.md](ROADMAP.md) for ideas on how to improve this gem.
+- use red for changes in the major version, blue for changes in the minor version
+- support other VCSs like subversion, mercurial, etc.
+- detect if the gem was added, then removed and then added again
+- use a libgit2 binding instead of the git cli, how much faster it is?
+- remove bundler dep
+- add yard doc
