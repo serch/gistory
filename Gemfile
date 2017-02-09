@@ -9,6 +9,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'coveralls', require: false
   gem 'flexmock' # mock object
   gem 'simplecov', require: false # code coverage
 end
