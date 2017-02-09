@@ -27,6 +27,9 @@ if you want to see farther in the past run:
 gistory sidekiq -m10000
 ```
 
+Note that if the gem was added, then removed, and then added again, `gistory` will
+only show the latest version changes up until it was removed.
+
 ## Roadmap
 
 Check [ROADMAP.md](ROADMAP.md) for ideas on how to improve this gem.
