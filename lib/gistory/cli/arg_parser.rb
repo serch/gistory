@@ -11,12 +11,12 @@ module Gistory
       end
 
       def parse
-        @parser.parse!
+        @parser.parse!(@args)
 
         parse_gem_name
         @config
-      rescue OptionParser::InvalidOption
-        raise(Gistory::ParserError, 'Invalid option')
+      rescue OptionParser::InvalidOption => err
+        raise(Gistory::ParserError, err.message)
       end
 
       def to_s
