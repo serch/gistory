@@ -15,6 +15,7 @@ Gem::Specification.new do |spec|
   spec.summary = 'Gistory: Know exactly when a gem was updated in your Gemfile.lock'
   spec.description = 'Gistory: Know exactly when a gem was updated in your Gemfile.lock'
   spec.homepage = 'https://www.github.com/serch/gistory'
+  spec.licenses = ['MIT']
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
