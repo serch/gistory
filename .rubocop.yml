@@ -13,3 +13,6 @@ Metrics/AbcSize:
 
 Metrics/MethodLength:
   Max: 15
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
