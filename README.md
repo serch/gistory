@@ -25,7 +25,7 @@ Change history:
 4.1.4 on Wed,  9 Nov 2016 14:31 +01:00 (commit 05a3c549)
 ```
 
-By default `gistory` only looks at the 100 last changes to Gemfile.lock
+By default `gistory` only looks at the last 100 changes to Gemfile.lock
 if you want to see farther in the past run:
 
 ```shell
