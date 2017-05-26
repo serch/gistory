@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Gistory
   module Cli
     class Main
