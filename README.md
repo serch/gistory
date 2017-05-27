@@ -44,3 +44,4 @@ only show the latest version changes up until it was removed.
 - remove bundler dep
 - add yard doc
 - do not print the warning text if there were no more changes in the lock file
+- find version with the longest length and pad all others to match it (f.i. rails has 4.2.8 and 4.2.7.1)
