@@ -38,6 +38,10 @@ module Gistory
         changes.each do |change|
           @io.puts "#{change.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.short_hash})"
         end
+
+        @io.puts ''
+        max = Gistory.config.max_lockfile_changes
+        @io.puts "The last #{max} changes to the lock file were taken into account, to see farther in the past use the -m switch" # rubocop:disable Metrics/LineLength
       end
     end
   end

@@ -43,3 +43,4 @@ only show the latest version changes up until it was removed.
 - use a libgit2 binding instead of the git cli, how much faster it is?
 - remove bundler dep
 - add yard doc
+- do not print the warning text if there were no more changes in the lock file
