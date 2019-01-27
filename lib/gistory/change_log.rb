@@ -12,22 +12,32 @@ module Gistory
 
     def changelog_for_gem(gem_name)
       version_changes = []
-      previous_version = nil
       lockfile_changes = @repo.changes_to_file(LOCKFILE)
 
-      lockfile_changes.each do |commit|
-        gem_spec = gem_spec_at_commit_hash(commit.short_hash, gem_name)
+      # no lockfile found or no changes to the lockfile found
+      return [] if lockfile_changes.empty?
+
+      previous_commit = lockfile_changes.shift
+      previous_gem_spec = gem_spec_at_commit_hash(previous_commit.short_hash, gem_name)
+      # only one change to the lockfile was found and the gem was not there
+      return [] if previous_gem_spec.nil?
+
+      lockfile_changes.each do |current_commit|
+        current_gem_spec = gem_spec_at_commit_hash(current_commit.short_hash, gem_name)
 
         # we reached the end, the gem didn't exist back then
         # TODO: what if it was added then removed and then added again?
-        break if gem_spec.nil?
+        break if current_gem_spec.nil?
 
-        # only store version changes of this gem
-        unless gem_spec.version.to_s == previous_version
-          version_changes << VersionChange.new(commit: commit, version: gem_spec.version)
-          previous_version = gem_spec.version.to_s
+        if current_gem_spec.version.to_s != previous_gem_spec.version.to_s
+          version_changes << VersionChange.new(commit: previous_commit, version: previous_gem_spec.version)
         end
+
+        previous_gem_spec = current_gem_spec
+        previous_commit = current_commit
       end
+
+      version_changes << VersionChange.new(commit: previous_commit, version: previous_gem_spec.version)
 
       version_changes
     end
