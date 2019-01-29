@@ -1,5 +1,7 @@
 sudo: false
 language: ruby
+script:
+  - bundle exec rspec
 rvm:
   - 2.4.0
   - 2.3.3
