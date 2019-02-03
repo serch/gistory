@@ -69,7 +69,7 @@ RSpec.describe Gistory::ChangeLog do
       end
     end
 
-    context 'when there are multiple commits and the first one introduces the gem to the lockfile', focus: true do
+    context 'when there are multiple commits and the first one introduces the gem to the lockfile' do
       let(:commit_hashes_and_gem_versions) {
         {
           'c9d4a19' => '5.0.5',
