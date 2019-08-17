@@ -11,6 +11,7 @@ require 'gistory/errors'
 require 'gistory/commit'
 require 'gistory/version_change'
 require 'gistory/git_repo'
+require 'gistory/lockfile_parser'
 require 'gistory/change_log'
 
 module Gistory
