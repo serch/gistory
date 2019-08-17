@@ -14,11 +14,11 @@ module Gistory
         parser = Cli::ArgParser.new(args: @args, io: @io)
         config = parser.parse
         history(repo, config.gem_name)
-      rescue Gistory::ParserError => error
-        @io.error error.message
+      rescue Gistory::ParserError => e
+        @io.error e.message
         @io.puts parser
-      rescue Gistory::Error => error
-        @io.error error.message
+      rescue Gistory::Error => e
+        @io.error e.message
       end
 
       private

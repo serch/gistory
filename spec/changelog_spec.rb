@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Gistory::ChangeLog do
-  VersionStub = Struct.new(:version) do
-    def nil?
-      version.nil?
-    end
-  end
-
   describe '#changelog_for_gem' do
     let(:repo) { double('repo') }
     let(:gem_name) { 'mygem' }
@@ -14,7 +8,7 @@ RSpec.describe Gistory::ChangeLog do
 
     before do
       expect(repo).to receive(:changes_to_file).and_return(commits)
-      allow(subject).to receive(:gem_spec_at_commit_hash).and_return(*versions)
+      allow(subject).to receive(:gem_version_at_commit_hash).and_return(*versions)
     end
 
     context 'when no changes to the lockfile are found' do
@@ -39,7 +33,7 @@ RSpec.describe Gistory::ChangeLog do
 
     context 'when there is only one commit that added the gem to an already existing lockfile' do
       let(:commits) { [Gistory::Commit.new(short_hash: '1234567', date: 'Wed, 8 Feb 2017 18:38:33 +0100')] }
-      let(:versions) { [VersionStub.new('1.2.3'), nil] }
+      let(:versions) { ['1.2.3', nil] }
 
       it 'returns one version change' do
         changes = subject.changelog_for_gem(gem_name)
@@ -55,7 +49,7 @@ RSpec.describe Gistory::ChangeLog do
 
     context 'when there is only one commit that added the gem and the lockfile at the same time' do
       let(:commits) { [Gistory::Commit.new(short_hash: '1234567', date: 'Wed, 8 Feb 2017 18:38:33 +0100')] }
-      let(:versions) { [VersionStub.new('1.2.3')] }
+      let(:versions) { ['1.2.3'] }
 
       it 'returns one version change' do
         changes = subject.changelog_for_gem(gem_name)
@@ -86,7 +80,7 @@ RSpec.describe Gistory::ChangeLog do
           Gistory::Commit.new(short_hash: hash, date: Time.now - (index * 60))
         end
       }
-      let(:versions) { commit_hashes_and_gem_versions.values.map { |v| VersionStub.new(v) } }
+      let(:versions) { commit_hashes_and_gem_versions.values }
 
       it 'correctly returns all version changes' do
         changes = subject.changelog_for_gem(gem_name)
@@ -124,7 +118,7 @@ RSpec.describe Gistory::ChangeLog do
           Gistory::Commit.new(short_hash: hash, date: Time.now - (index * 60))
         end
       }
-      let(:versions) { commit_hashes_and_gem_versions.values.map { |v| VersionStub.new(v) } }
+      let(:versions) { commit_hashes_and_gem_versions.values }
 
       it 'correctly returns all version changes' do
         changes = subject.changelog_for_gem(gem_name)

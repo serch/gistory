@@ -18,8 +18,8 @@ module Gistory
         parse_gem_name
         @io.error("extra parameters ignored: #{@args}") unless @args.count.zero?
         @config
-      rescue OptionParser::InvalidOption => err
-        raise(Gistory::ParserError, err.message)
+      rescue OptionParser::InvalidOption => e
+        raise(Gistory::ParserError, e.message)
       end
 
       def to_s
