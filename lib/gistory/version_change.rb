@@ -14,5 +14,9 @@ module Gistory
       @version = version
       freeze
     end
+
+    def to_s
+      "Version #{version} (on #{date} by #{short_hash})"
+    end
   end
 end
