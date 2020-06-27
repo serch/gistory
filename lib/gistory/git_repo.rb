@@ -26,6 +26,7 @@ module Gistory
       if Gistory.config.all_commits?
         "--follow #{filename}"
       else
+        # TODO: filter out commits that did not introduce changes to the lock file
         '--first-parent'
       end
     end
