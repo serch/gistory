@@ -23,7 +23,7 @@ module Gistory
     private
 
     def git_log_strategy(filename)
-      if Gistory.config.all_commits?
+      if Gistory.config.all_branches?
         "--follow #{filename}"
       else
         # TODO: filter out commits that did not introduce changes to the lock file

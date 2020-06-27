@@ -66,7 +66,7 @@ module Gistory
         description = 'use commits from all branches ' \
                       '(by default it uses only commits made to the current branch)'
         parser.on('-a', '--all-commits', description) do |a|
-          config.all_commits = a
+          config.all_branches = a
         end
       end
 
