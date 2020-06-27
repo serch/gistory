@@ -2,13 +2,13 @@
 
 RSpec.describe Gistory::ChangeLog do
   describe '#changelog_for_gem' do
-    let(:repo) { double('repo') }
+    subject(:change_log) { described_class.new(repo: repo) }
+
+    let(:repo) { instance_double('GitRepo', changes_to_file: commits) }
     let(:gem_name) { 'mygem' }
-    let(:subject) { described_class.new(repo: repo) }
 
     before do
-      expect(repo).to receive(:changes_to_file).and_return(commits)
-      allow(subject).to receive(:gem_version_at_commit_hash).and_return(*versions)
+      allow(change_log).to receive(:gem_version_at_commit_hash).and_return(*versions)
     end
 
     context 'when no changes to the lockfile are found' do
@@ -16,7 +16,7 @@ RSpec.describe Gistory::ChangeLog do
       let(:versions) { ['dummy'] } # dummy otherwise and_return(*[]) fails
 
       it 'returns no version changes' do
-        changes = subject.changelog_for_gem(gem_name)
+        changes = change_log.changelog_for_gem(gem_name)
         expect(changes).to be_empty
       end
     end
@@ -26,7 +26,7 @@ RSpec.describe Gistory::ChangeLog do
       let(:versions) { [nil] }
 
       it 'returns no version changes' do
-        changes = subject.changelog_for_gem(gem_name)
+        changes = change_log.changelog_for_gem(gem_name)
         expect(changes).to be_empty
       end
     end
@@ -36,7 +36,7 @@ RSpec.describe Gistory::ChangeLog do
       let(:versions) { ['1.2.3', nil] }
 
       it 'returns one version change' do
-        changes = subject.changelog_for_gem(gem_name)
+        changes = change_log.changelog_for_gem(gem_name)
         expect(changes.count).to eq(1)
 
         version_change = changes.first
@@ -52,7 +52,7 @@ RSpec.describe Gistory::ChangeLog do
       let(:versions) { ['1.2.3'] }
 
       it 'returns one version change' do
-        changes = subject.changelog_for_gem(gem_name)
+        changes = change_log.changelog_for_gem(gem_name)
         expect(changes.count).to eq(1)
 
         version_change = changes.first
@@ -83,7 +83,7 @@ RSpec.describe Gistory::ChangeLog do
       let(:versions) { commit_hashes_and_gem_versions.values }
 
       it 'correctly returns all version changes' do
-        changes = subject.changelog_for_gem(gem_name)
+        changes = change_log.changelog_for_gem(gem_name)
 
         expect(changes.count).to eq(4)
 
@@ -121,7 +121,7 @@ RSpec.describe Gistory::ChangeLog do
       let(:versions) { commit_hashes_and_gem_versions.values }
 
       it 'correctly returns all version changes' do
-        changes = subject.changelog_for_gem(gem_name)
+        changes = change_log.changelog_for_gem(gem_name)
         expect(changes.count).to eq(5)
 
         expect(changes[0].short_hash).to eq('c9d4a19')
