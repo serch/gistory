@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name = 'gistory'
   spec.version = Gistory::VERSION
   spec.platform = Gem::Platform::RUBY
-  spec.required_ruby_version = '>= 2.2'
+  spec.required_ruby_version = '>= 2.4'
   spec.authors = ['Sergio Medina']
   spec.email = ['medinasergio@gmail.com']
 
