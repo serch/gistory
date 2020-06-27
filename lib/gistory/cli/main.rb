@@ -34,15 +34,24 @@ module Gistory
         @io.puts "Current version: #{changes.first.version}"
         @io.puts ''
 
+        print_change_history(changes)
+
+        @io.puts ''
+
+        print_configuration_info
+      end
+
+      def print_change_history(changes)
         @io.puts 'Change history:'
         max_length = changes.map { |c| c.version.length }.max
+
         changes.each do |change|
           @io.puts "#{change.version.ljust(max_length)} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} " \
                    "(commit #{change.short_hash})"
         end
+      end
 
-        @io.puts ''
-
+      def print_configuration_info
         max = Gistory.config.max_fetched_commits
         if Gistory.config.all_branches?
           @io.puts "The last #{max} changes to the lock file were fetched."
