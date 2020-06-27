@@ -31,6 +31,14 @@ Style/IfUnlessModifier:
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
 
+# rubocop-rspec
+
+RSpec/MultipleExpectations:
+  Max: 15
+
+RSpec/ExampleLength:
+  Max: 15
+
 # starting rubocop 0.80 newly added cops need to be explicitly enabled:
 
 Lint/DeprecatedOpenSSLConstant:
