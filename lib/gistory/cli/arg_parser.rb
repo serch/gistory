@@ -38,33 +38,35 @@ module Gistory
         parser = OptionParser.new
         parser.banner = 'Usage: gistory <gem_name> [options]'
 
-        add_specific_options(parser, config)
-        add_common_options(parser)
+        add_options(parser, config)
 
         parser
       end
 
-      def add_specific_options(parser, config)
+      def add_options(parser, config)
         parser.separator ''
-        parser.separator 'Specific options:'
+        parser.separator 'Options:'
 
-        add_max_lockfile_changes(parser, config)
-      end
-
-      def add_common_options(parser)
-        parser.separator ''
-        parser.separator 'Common options:'
-
+        add_max_fetched_commits(parser, config)
+        add_use_commits_from_all_branches(parser, config)
         add_help(parser)
         add_version(parser)
       end
 
-      def add_max_lockfile_changes(parser, config)
-        default = config.max_lockfile_changes
-        description = "max number of changes to the lock file (default #{default})"
-        parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, description) do |m|
-          raise(Gistory::ParserError, 'argument --max-lockfile-changes must be an integer') if m.nil?
-          config.max_lockfile_changes = m
+      def add_max_fetched_commits(parser, config)
+        default = config.max_fetched_commits
+        description = "max number of commits to be fetched (default #{default})"
+        parser.on('-m', '--max-fetched-commits [Integer]', Integer, description) do |m|
+          raise(Gistory::ParserError, 'argument --max-fetched-commits must be an integer') if m.nil?
+          config.max_fetched_commits = m
+        end
+      end
+
+      def add_use_commits_from_all_branches(parser, config)
+        description = 'use commits from all branches ' \
+                      '(by default it uses only commits made to the current branch)'
+        parser.on('-a', '--all-branches', description) do |a|
+          config.all_branches = a
         end
       end
 

@@ -10,17 +10,17 @@ module Gistory
 
     def changelog_for_gem(gem_name)
       version_changes = []
-      lockfile_changes = @repo.changes_to_file(LOCKFILE)
+      commits_with_changes = @repo.changes_to_file(LOCKFILE)
 
       # no lockfile found or no changes to the lockfile found
-      return [] if lockfile_changes.empty?
+      return [] if commits_with_changes.empty?
 
-      previous_commit = lockfile_changes.shift
+      previous_commit = commits_with_changes.shift
       previous_gem_spec = gem_version_at_commit_hash(previous_commit.short_hash, gem_name)
       # only one change to the lockfile was found and the gem was not there
       return [] if previous_gem_spec.nil?
 
-      lockfile_changes.each do |current_commit|
+      commits_with_changes.each do |current_commit|
         current_gem_spec = gem_version_at_commit_hash(current_commit.short_hash, gem_name)
 
         # we reached the end, the gem didn't exist back then

@@ -10,8 +10,9 @@ module Gistory
     end
 
     def changes_to_file(filename)
-      max_count = Gistory.config.max_lockfile_changes
-      hashes_and_dates = git("log --pretty=format:'%h|%cD' --max-count=#{max_count} --follow #{filename}")
+      max_count = Gistory.config.max_fetched_commits
+      strategy = git_log_strategy(filename)
+      hashes_and_dates = git("log --pretty=format:'%h|%cD' --max-count=#{max_count} #{strategy}")
       to_commits(hashes_and_dates.split("\n"))
     end
 
@@ -20,6 +21,15 @@ module Gistory
     end
 
     private
+
+    def git_log_strategy(filename)
+      if Gistory.config.all_branches?
+        "--follow #{filename}"
+      else
+        # TODO: filter out commits that did not introduce changes to the lock file
+        '--first-parent'
+      end
+    end
 
     def git_cli_available?
       system('which git > /dev/null 2>&1')

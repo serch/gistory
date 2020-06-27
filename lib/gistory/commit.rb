@@ -11,5 +11,9 @@ module Gistory
       @date = DateTime.parse(date.to_s)
       freeze
     end
+
+    def to_s
+      "Commit #{short_hash} on #{date}"
+    end
   end
 end

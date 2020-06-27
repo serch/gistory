@@ -8,11 +8,11 @@ RSpec.describe Gistory::Cli::ArgParser do
       expect(config.gem_name).to eq('mygem')
     end
 
-    it 'parses max_lockfile_changes' do
+    it 'parses max_fetched_commits' do
       parser = described_class.new(args: ['mygem', '-m10'])
       config = parser.parse
       expect(config.gem_name).to eq('mygem')
-      expect(config.max_lockfile_changes).to eq(10)
+      expect(config.max_fetched_commits).to eq(10)
     end
 
     it 'raises when no arguments are passed' do
@@ -21,7 +21,7 @@ RSpec.describe Gistory::Cli::ArgParser do
     end
 
     it 'raises when no gem name is passed' do
-      parser = described_class.new(args: ['--max-lockfile-changes', '10'])
+      parser = described_class.new(args: ['--max-fetched-commits', '10'])
       expect { parser.parse }.to raise_error(Gistory::ParserError)
     end
 
@@ -30,7 +30,7 @@ RSpec.describe Gistory::Cli::ArgParser do
       expect { parser.parse }.to raise_error(Gistory::ParserError)
     end
 
-    it 'raises when max_lockfile_changes is not an integer' do
+    it 'raises when max_fetched_commits is not an integer' do
       parser = described_class.new(args: ['mygem', '-mA'])
       expect { parser.parse }.to raise_error(Gistory::ParserError)
     end
