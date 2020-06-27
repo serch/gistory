@@ -1,3 +1,5 @@
+require: rubocop-rspec
+
 Metrics/AbcSize:
   Max: 25
   Exclude:
