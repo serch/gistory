@@ -41,7 +41,7 @@ module Gistory
 
         @io.puts ''
 
-        max = Gistory.config.max_lockfile_changes
+        max = Gistory.config.max_fetched_commits
         if Gistory.config.all_commits?
           @io.puts "The last #{max} changes to the lock file were fetched."
         else

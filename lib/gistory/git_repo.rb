@@ -10,7 +10,7 @@ module Gistory
     end
 
     def changes_to_file(filename)
-      max_count = Gistory.config.max_lockfile_changes
+      max_count = Gistory.config.max_fetched_commits
       strategy = git_log_strategy(filename)
       hashes_and_dates = git("log --pretty=format:'%h|%cD' --max-count=#{max_count} #{strategy}")
       to_commits(hashes_and_dates.split("\n"))

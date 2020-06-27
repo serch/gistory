@@ -47,18 +47,18 @@ module Gistory
         parser.separator ''
         parser.separator 'Options:'
 
-        add_max_lockfile_changes(parser, config)
+        add_max_fetched_commits(parser, config)
         add_use_commits_from_all_branches(parser, config)
         add_help(parser)
         add_version(parser)
       end
 
-      def add_max_lockfile_changes(parser, config)
-        default = config.max_lockfile_changes
-        description = "max number of changes to the lock file (default #{default})"
-        parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, description) do |m|
-          raise(Gistory::ParserError, 'argument --max-lockfile-changes must be an integer') if m.nil?
-          config.max_lockfile_changes = m
+      def add_max_fetched_commits(parser, config)
+        default = config.max_fetched_commits
+        description = "max number of commits to be fetched (default #{default})"
+        parser.on('-m', '--max-fetched-commits [Integer]', Integer, description) do |m|
+          raise(Gistory::ParserError, 'argument --max-fetched-commits must be an integer') if m.nil?
+          config.max_fetched_commits = m
         end
       end
 
