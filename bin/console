@@ -8,7 +8,7 @@ require 'pry'
 root_path = "#{File.dirname(__FILE__)}/.."
 
 # require all files in lib for quick access to them in the console
-Dir["#{root_path}/lib/**/*.rb"].each { |file| require file }
+Dir["#{root_path}/lib/**/*.rb"].sort.each { |file| require file }
 
 def reload!
   verbosity = $VERBOSE
