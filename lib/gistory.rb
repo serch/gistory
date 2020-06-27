@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require 'gistory/version'
+require "gistory/version"
 
-require 'gistory/cli/main'
-require 'gistory/cli/arg_parser'
-require 'gistory/cli/io'
-require 'gistory/configuration'
+require "gistory/cli/main"
+require "gistory/cli/arg_parser"
+require "gistory/cli/io"
+require "gistory/configuration"
 
-require 'gistory/errors'
-require 'gistory/commit'
-require 'gistory/version_change'
-require 'gistory/git_repo'
-require 'gistory/lockfile_parser'
-require 'gistory/change_log'
+require "gistory/errors"
+require "gistory/commit"
+require "gistory/version_change"
+require "gistory/git_repo"
+require "gistory/lockfile_parser"
+require "gistory/change_log"
 
 module Gistory
   class << self

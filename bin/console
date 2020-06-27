@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'bundler/setup'
-require 'gistory'
-require 'pry'
+require "bundler/setup"
+require "gistory"
+require "pry"
 
 root_path = "#{File.dirname(__FILE__)}/.."
 

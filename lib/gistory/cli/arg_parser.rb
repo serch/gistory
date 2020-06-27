@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'optparse'
+require "optparse"
 
 module Gistory
   module Cli
@@ -30,13 +30,13 @@ module Gistory
 
       def parse_gem_name
         gem_name = @args.shift
-        raise(Gistory::ParserError, 'No gem specified') unless gem_name
+        raise(Gistory::ParserError, "No gem specified") unless gem_name
         @config.gem_name = gem_name
       end
 
       def create_parser(config)
         parser = OptionParser.new
-        parser.banner = 'Usage: gistory <gem_name> [options]'
+        parser.banner = "Usage: gistory <gem_name> [options]"
 
         add_options(parser, config)
 
@@ -44,8 +44,8 @@ module Gistory
       end
 
       def add_options(parser, config)
-        parser.separator ''
-        parser.separator 'Options:'
+        parser.separator ""
+        parser.separator "Options:"
 
         add_max_fetched_commits(parser, config)
         add_use_commits_from_all_branches(parser, config)
@@ -56,29 +56,29 @@ module Gistory
       def add_max_fetched_commits(parser, config)
         default = config.max_fetched_commits
         description = "max number of commits to be fetched (default #{default})"
-        parser.on('-m', '--max-fetched-commits [Integer]', Integer, description) do |m|
-          raise(Gistory::ParserError, 'argument --max-fetched-commits must be an integer') if m.nil?
+        parser.on("-m", "--max-fetched-commits [Integer]", Integer, description) do |m|
+          raise(Gistory::ParserError, "argument --max-fetched-commits must be an integer") if m.nil?
           config.max_fetched_commits = m
         end
       end
 
       def add_use_commits_from_all_branches(parser, config)
-        description = 'use commits from all branches ' \
-                      '(by default it uses only commits made to the current branch)'
-        parser.on('-a', '--all-branches', description) do |a|
+        description = "use commits from all branches " \
+                      "(by default it uses only commits made to the current branch)"
+        parser.on("-a", "--all-branches", description) do |a|
           config.all_branches = a
         end
       end
 
       def add_help(parser)
-        parser.on_tail('-h', '--help', 'Show this message') do
+        parser.on_tail("-h", "--help", "Show this message") do
           @io.puts parser
           exit
         end
       end
 
       def add_version(parser)
-        parser.on_tail('--version', 'Show version') do
+        parser.on_tail("--version", "Show version") do
           @io.puts "gistory version #{Gistory::VERSION}"
           exit
         end

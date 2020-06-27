@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'English'
+require "English"
 
 module Gistory
   class GitRepo
     def initialize(path:)
-      raise(Gistory::Error, 'This is not a valid git repository') unless Dir.exist?(File.join(path, '.git'))
-      raise(Gistory::Error, 'git is not available, please install it') unless git_cli_available?
+      raise(Gistory::Error, "This is not a valid git repository") unless Dir.exist?(File.join(path, ".git"))
+      raise(Gistory::Error, "git is not available, please install it") unless git_cli_available?
     end
 
     def changes_to_file(filename)
@@ -27,24 +27,24 @@ module Gistory
         "--follow #{filename}"
       else
         # TODO: filter out commits that did not introduce changes to the lock file
-        '--first-parent'
+        "--first-parent"
       end
     end
 
     def git_cli_available?
-      system('which git > /dev/null 2>&1')
+      system("which git > /dev/null 2>&1")
     end
 
     def to_commits(hashes_and_dates)
       hashes_and_dates.map do |hash_and_date|
-        commit_hash, date = hash_and_date.split('|')
+        commit_hash, date = hash_and_date.split("|")
         Commit.new(short_hash: commit_hash, date: date)
       end
     end
 
     def git(command)
       out = `git #{command}`
-      raise 'Git CLI command failed' unless $CHILD_STATUS.success?
+      raise "Git CLI command failed" unless $CHILD_STATUS.success?
       out
     end
   end

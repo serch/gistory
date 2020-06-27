@@ -1,78 +1,78 @@
 # frozen_string_literal: true
 
 RSpec.describe Gistory::ChangeLog do
-  describe '#changelog_for_gem' do
+  describe "#changelog_for_gem" do
     subject(:change_log) { described_class.new(repo: repo) }
 
-    let(:repo) { instance_double('GitRepo', changes_to_file: commits) }
-    let(:gem_name) { 'mygem' }
+    let(:repo) { instance_double("GitRepo", changes_to_file: commits) }
+    let(:gem_name) { "mygem" }
 
     before do
       allow(change_log).to receive(:gem_version_at_commit_hash).and_return(*versions)
     end
 
-    context 'when no changes to the lockfile are found' do
+    context "when no changes to the lockfile are found" do
       let(:commits) { [] }
-      let(:versions) { ['dummy'] } # dummy otherwise and_return(*[]) fails
+      let(:versions) { ["dummy"] } # dummy otherwise and_return(*[]) fails
 
-      it 'returns no version changes' do
+      it "returns no version changes" do
         changes = change_log.changelog_for_gem(gem_name)
         expect(changes).to be_empty
       end
     end
 
-    context 'when the gem is not found in the lockfile' do
-      let(:commits) { [Gistory::Commit.new(short_hash: '1234567', date: 'Wed, 8 Feb 2017 18:38:33 +0100')] }
+    context "when the gem is not found in the lockfile" do
+      let(:commits) { [Gistory::Commit.new(short_hash: "1234567", date: "Wed, 8 Feb 2017 18:38:33 +0100")] }
       let(:versions) { [nil] }
 
-      it 'returns no version changes' do
+      it "returns no version changes" do
         changes = change_log.changelog_for_gem(gem_name)
         expect(changes).to be_empty
       end
     end
 
-    context 'when there is only one commit that added the gem to an already existing lockfile' do
-      let(:commits) { [Gistory::Commit.new(short_hash: '1234567', date: 'Wed, 8 Feb 2017 18:38:33 +0100')] }
-      let(:versions) { ['1.2.3', nil] }
+    context "when there is only one commit that added the gem to an already existing lockfile" do
+      let(:commits) { [Gistory::Commit.new(short_hash: "1234567", date: "Wed, 8 Feb 2017 18:38:33 +0100")] }
+      let(:versions) { ["1.2.3", nil] }
 
-      it 'returns one version change' do
+      it "returns one version change" do
         changes = change_log.changelog_for_gem(gem_name)
         expect(changes.count).to eq(1)
 
         version_change = changes.first
 
-        expect(version_change.short_hash).to eq('1234567')
-        expect(version_change.date).to eq(DateTime.parse('Wed, 8 Feb 2017 18:38:33 +0100'))
-        expect(version_change.version).to eq('1.2.3')
+        expect(version_change.short_hash).to eq("1234567")
+        expect(version_change.date).to eq(DateTime.parse("Wed, 8 Feb 2017 18:38:33 +0100"))
+        expect(version_change.version).to eq("1.2.3")
       end
     end
 
-    context 'when there is only one commit that added the gem and the lockfile at the same time' do
-      let(:commits) { [Gistory::Commit.new(short_hash: '1234567', date: 'Wed, 8 Feb 2017 18:38:33 +0100')] }
-      let(:versions) { ['1.2.3'] }
+    context "when there is only one commit that added the gem and the lockfile at the same time" do
+      let(:commits) { [Gistory::Commit.new(short_hash: "1234567", date: "Wed, 8 Feb 2017 18:38:33 +0100")] }
+      let(:versions) { ["1.2.3"] }
 
-      it 'returns one version change' do
+      it "returns one version change" do
         changes = change_log.changelog_for_gem(gem_name)
         expect(changes.count).to eq(1)
 
         version_change = changes.first
 
-        expect(version_change.short_hash).to eq('1234567')
-        expect(version_change.date).to eq(DateTime.parse('Wed, 8 Feb 2017 18:38:33 +0100'))
-        expect(version_change.version).to eq('1.2.3')
+        expect(version_change.short_hash).to eq("1234567")
+        expect(version_change.date).to eq(DateTime.parse("Wed, 8 Feb 2017 18:38:33 +0100"))
+        expect(version_change.version).to eq("1.2.3")
       end
     end
 
-    context 'when there are multiple commits and the first one introduces the gem to the lockfile' do
+    context "when there are multiple commits and the first one introduces the gem to the lockfile" do
       let(:commit_hashes_and_gem_versions) {
         {
-          'c9d4a19' => '5.0.5',
-          '8198719' => '5.0.2',
-          '0b03443' => '5.0.2',
-          '453f316' => '5.0.1',
-          'db1ecad' => '5.0.1',
-          '7fa4a05' => '5.0.0',
-          '29b6e67' => nil
+          "c9d4a19" => "5.0.5",
+          "8198719" => "5.0.2",
+          "0b03443" => "5.0.2",
+          "453f316" => "5.0.1",
+          "db1ecad" => "5.0.1",
+          "7fa4a05" => "5.0.0",
+          "29b6e67" => nil
         }
       }
       let(:commits) {
@@ -82,35 +82,35 @@ RSpec.describe Gistory::ChangeLog do
       }
       let(:versions) { commit_hashes_and_gem_versions.values }
 
-      it 'correctly returns all version changes' do
+      it "correctly returns all version changes" do
         changes = change_log.changelog_for_gem(gem_name)
 
         expect(changes.count).to eq(4)
 
-        expect(changes[0].short_hash).to eq('c9d4a19')
-        expect(changes[0].version).to eq('5.0.5')
+        expect(changes[0].short_hash).to eq("c9d4a19")
+        expect(changes[0].version).to eq("5.0.5")
 
-        expect(changes[1].short_hash).to eq('0b03443')
-        expect(changes[1].version).to eq('5.0.2')
+        expect(changes[1].short_hash).to eq("0b03443")
+        expect(changes[1].version).to eq("5.0.2")
 
-        expect(changes[2].short_hash).to eq('db1ecad')
-        expect(changes[2].version).to eq('5.0.1')
+        expect(changes[2].short_hash).to eq("db1ecad")
+        expect(changes[2].version).to eq("5.0.1")
 
-        expect(changes[3].short_hash).to eq('7fa4a05')
-        expect(changes[3].version).to eq('5.0.0')
+        expect(changes[3].short_hash).to eq("7fa4a05")
+        expect(changes[3].version).to eq("5.0.0")
       end
     end
 
-    context 'when there are multiple commits and the first one introduces both the gem and the lockfile' do
+    context "when there are multiple commits and the first one introduces both the gem and the lockfile" do
       let(:commit_hashes_and_gem_versions) {
         {
-          'c9d4a19' => '5.0.5',
-          '8198719' => '5.0.2',
-          '0b03443' => '5.0.2',
-          '453f316' => '5.0.1',
-          'db1ecad' => '5.0.1',
-          '7fa4a05' => '5.0.0',
-          '29b6e67' => '4.9.9'
+          "c9d4a19" => "5.0.5",
+          "8198719" => "5.0.2",
+          "0b03443" => "5.0.2",
+          "453f316" => "5.0.1",
+          "db1ecad" => "5.0.1",
+          "7fa4a05" => "5.0.0",
+          "29b6e67" => "4.9.9"
         }
       }
       let(:commits) {
@@ -120,24 +120,24 @@ RSpec.describe Gistory::ChangeLog do
       }
       let(:versions) { commit_hashes_and_gem_versions.values }
 
-      it 'correctly returns all version changes' do
+      it "correctly returns all version changes" do
         changes = change_log.changelog_for_gem(gem_name)
         expect(changes.count).to eq(5)
 
-        expect(changes[0].short_hash).to eq('c9d4a19')
-        expect(changes[0].version).to eq('5.0.5')
+        expect(changes[0].short_hash).to eq("c9d4a19")
+        expect(changes[0].version).to eq("5.0.5")
 
-        expect(changes[1].short_hash).to eq('0b03443')
-        expect(changes[1].version).to eq('5.0.2')
+        expect(changes[1].short_hash).to eq("0b03443")
+        expect(changes[1].version).to eq("5.0.2")
 
-        expect(changes[2].short_hash).to eq('db1ecad')
-        expect(changes[2].version).to eq('5.0.1')
+        expect(changes[2].short_hash).to eq("db1ecad")
+        expect(changes[2].version).to eq("5.0.1")
 
-        expect(changes[3].short_hash).to eq('7fa4a05')
-        expect(changes[3].version).to eq('5.0.0')
+        expect(changes[3].short_hash).to eq("7fa4a05")
+        expect(changes[3].version).to eq("5.0.0")
 
-        expect(changes[4].short_hash).to eq('29b6e67')
-        expect(changes[4].version).to eq('4.9.9')
+        expect(changes[4].short_hash).to eq("29b6e67")
+        expect(changes[4].version).to eq("4.9.9")
       end
     end
   end

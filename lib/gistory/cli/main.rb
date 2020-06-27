@@ -32,17 +32,17 @@ module Gistory
 
         @io.puts "Gem: #{gem_name}"
         @io.puts "Current version: #{changes.first.version}"
-        @io.puts ''
+        @io.puts ""
 
         print_change_history(changes)
 
-        @io.puts ''
+        @io.puts ""
 
         print_configuration_info
       end
 
       def print_change_history(changes)
-        @io.puts 'Change history:'
+        @io.puts "Change history:"
         max_length = changes.map { |c| c.version.length }.max
 
         changes.each do |change|
@@ -59,7 +59,7 @@ module Gistory
           @io.puts "The last #{max} commits made to the current branch were fetched."
         end
 
-        @io.puts 'To see farther in the past use the -m switch'
+        @io.puts "To see farther in the past use the -m switch"
       end
     end
   end

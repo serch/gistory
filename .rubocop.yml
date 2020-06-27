@@ -31,6 +31,9 @@ Style/IfUnlessModifier:
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
 
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
 # rubocop-rspec
 
 RSpec/MultipleExpectations:

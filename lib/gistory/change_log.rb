@@ -2,7 +2,7 @@
 
 module Gistory
   class ChangeLog
-    LOCKFILE = 'Gemfile.lock'
+    LOCKFILE = "Gemfile.lock"
 
     def initialize(repo:)
       @repo = repo
