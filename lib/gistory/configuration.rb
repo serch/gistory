@@ -2,11 +2,16 @@
 
 module Gistory
   class Configuration
-    attr_accessor :gem_name, :max_lockfile_changes, :all_commits
+    attr_accessor :gem_name, :max_lockfile_changes
+    attr_writer :all_commits
 
     def initialize
       @max_lockfile_changes = 100
       @all_commits = false
+    end
+
+    def all_commits?
+      @all_commits
     end
   end
 end
