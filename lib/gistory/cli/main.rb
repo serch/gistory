@@ -35,8 +35,10 @@ module Gistory
         @io.puts ''
 
         @io.puts 'Change history:'
+        max_length = changes.map { |c| c.version.length }.max
         changes.each do |change|
-          @io.puts "#{change.version} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} (commit #{change.short_hash})"
+          @io.puts "#{change.version.ljust(max_length)} on #{change.date.strftime('%a, %e %b %Y %H:%M %Z')} " \
+                   "(commit #{change.short_hash})"
         end
 
         @io.puts ''
