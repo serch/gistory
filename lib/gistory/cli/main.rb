@@ -40,9 +40,15 @@ module Gistory
         end
 
         @io.puts ''
+
         max = Gistory.config.max_lockfile_changes
-        @io.puts "The last #{max} changes to the lock file were taken into account, " \
-                 'to see farther in the past use the -m switch'
+        if Gistory.config.all_commits?
+          @io.puts "The last #{max} changes to the lock file were fetched."
+        else
+          @io.puts "The last #{max} commits made to the current branch were fetched."
+        end
+
+        @io.puts 'To see farther in the past use the -m switch'
       end
     end
   end
