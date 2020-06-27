@@ -49,6 +49,7 @@ module Gistory
         parser.separator 'Specific options:'
 
         add_max_lockfile_changes(parser, config)
+        add_use_commits_from_all_branches(parser, config)
       end
 
       def add_common_options(parser)
@@ -65,6 +66,14 @@ module Gistory
         parser.on('-m', '--max-lockfile-changes [INTEGER]', Integer, description) do |m|
           raise(Gistory::ParserError, 'argument --max-lockfile-changes must be an integer') if m.nil?
           config.max_lockfile_changes = m
+        end
+      end
+
+      def add_use_commits_from_all_branches(parser, config)
+        default = config.all_commits
+        description = "use comits from all branches (default #{default})"
+        parser.on('-a', '--all-commits', description) do |a|
+          config.all_commits = a
         end
       end
 
