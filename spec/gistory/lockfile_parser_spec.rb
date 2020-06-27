@@ -4,7 +4,7 @@ RSpec.describe Gistory::LockfileParser do
   let(:subject) { described_class.new(lockfile_content: lockfile_content) }
 
   describe '#gem_version' do
-    let(:lockfile_path) { File.join(File.dirname(__FILE__), "test_files/#{lockfile}") }
+    let(:lockfile_path) { File.join(File.dirname(__FILE__), "../test_files/#{lockfile}") }
     let(:lockfile_content) { File.read(lockfile_path) }
 
     context "it parses the gem's version" do
