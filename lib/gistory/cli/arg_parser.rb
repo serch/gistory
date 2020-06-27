@@ -38,24 +38,17 @@ module Gistory
         parser = OptionParser.new
         parser.banner = 'Usage: gistory <gem_name> [options]'
 
-        add_specific_options(parser, config)
-        add_common_options(parser)
+        add_options(parser, config)
 
         parser
       end
 
-      def add_specific_options(parser, config)
+      def add_options(parser, config)
         parser.separator ''
-        parser.separator 'Specific options:'
+        parser.separator 'Options:'
 
         add_max_lockfile_changes(parser, config)
         add_use_commits_from_all_branches(parser, config)
-      end
-
-      def add_common_options(parser)
-        parser.separator ''
-        parser.separator 'Common options:'
-
         add_help(parser)
         add_version(parser)
       end
@@ -71,7 +64,8 @@ module Gistory
 
       def add_use_commits_from_all_branches(parser, config)
         default = config.all_commits
-        description = "use comits from all branches (default #{default})"
+        description = 'use commits from all branches ' \
+                      "(by default it uses only commits made to the current branch)"
         parser.on('-a', '--all-commits', description) do |a|
           config.all_commits = a
         end
