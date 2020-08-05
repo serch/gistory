@@ -1,5 +1,8 @@
 require: rubocop-rspec
 
+AllCops:
+  NewCops: enable
+
 Metrics/AbcSize:
   Max: 25
   Exclude:
@@ -41,47 +44,3 @@ RSpec/MultipleExpectations:
 
 RSpec/ExampleLength:
   Max: 15
-
-# starting rubocop 0.80 newly added cops need to be explicitly enabled:
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Style/ExponentialNotation:
-  Enabled: true
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
-Style/RedundantFetchBlock:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/SlicingWithRange:
-  Enabled: true
