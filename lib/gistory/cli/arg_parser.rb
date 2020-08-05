@@ -31,6 +31,7 @@ module Gistory
       def parse_gem_name
         gem_name = @args.shift
         raise(Gistory::ParserError, "No gem specified") unless gem_name
+
         @config.gem_name = gem_name
       end
 
@@ -58,6 +59,7 @@ module Gistory
         description = "max number of commits to be fetched (default #{default})"
         parser.on("-m", "--max-fetched-commits [Integer]", Integer, description) do |m|
           raise(Gistory::ParserError, "argument --max-fetched-commits must be an integer") if m.nil?
+
           config.max_fetched_commits = m
         end
       end

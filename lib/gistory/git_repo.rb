@@ -45,6 +45,7 @@ module Gistory
     def git(command)
       out = `git #{command}`
       raise "Git CLI command failed" unless $CHILD_STATUS.success?
+
       out
     end
   end
