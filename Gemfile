@@ -5,9 +5,9 @@ source "https://rubygems.org"
 gemspec
 
 group :development, :test do
-  gem "byebug" # debugger
-  gem "pry" # better console
-  gem "pry-byebug" # pry integration for byebug
+  gem "byebug"
+  gem "pry", "~> 0.13.1"
+  gem "pry-byebug", "~> 3.9.0"
 end
 
 group :test do
