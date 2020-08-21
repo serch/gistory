@@ -51,3 +51,4 @@ only show the latest version changes up until it was removed.
 - remove bundler dep
 - add yard doc
 - do not print the warning text if there were no more changes in the lock file
+- link the commit SHA to the repo's hosting service, if any
