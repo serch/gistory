@@ -50,6 +50,7 @@ module Gistory
 
         add_max_fetched_commits(parser, config)
         add_use_commits_from_all_branches(parser, config)
+        add_output_commit_hashes_only(parser, config)
         add_help(parser)
         add_version(parser)
       end
@@ -69,6 +70,15 @@ module Gistory
                       "(by default it uses only commits made to the current branch)"
         parser.on("-a", "--all-branches", description) do |a|
           config.all_branches = a
+        end
+      end
+
+      def add_output_commit_hashes_only(parser, config)
+        option_switch = "--hashes-only"
+        parser.on(option_switch,
+                  "output commit hashes only so they can be piped",
+                  "for example: gistory #{option_switch} sidekiq | xargs git show") do |ho|
+          config.output_commit_hashes_only = ho
         end
       end
 
