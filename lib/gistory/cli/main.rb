@@ -30,6 +30,18 @@ module Gistory
           raise(Gistory::Error, "Gem '#{gem_name}' not found in lock file, maybe a typo?")
         end
 
+        if Gistory.config.output_commit_hashes_only?
+          print_commit_hashes_only(changes)
+        else
+          print_full_output(gem_name, changes)
+        end
+      end
+
+      def print_commit_hashes_only(changes)
+        changes.each { |change| @io.puts change.short_hash }
+      end
+
+      def print_full_output(gem_name, changes)
         @io.puts "Gem: #{gem_name}"
         @io.puts "Current version: #{changes.first.version}"
         @io.puts ""
