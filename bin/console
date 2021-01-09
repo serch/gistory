@@ -14,7 +14,7 @@ def reload!
   verbosity = $VERBOSE
   begin
     $VERBOSE = nil
-    files = $LOADED_FEATURES.select { |feat| feat =~ %r{/gistory/} }
+    files = $LOADED_FEATURES.select { |feat| feat.include?("gistory") }
     files.each { |file| load(file) }
   ensure
     $VERBOSE = verbosity
