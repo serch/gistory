@@ -26,12 +26,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "bundler", "~> 2.0"
   spec.add_dependency "colorize"
-
-  spec.add_development_dependency "pry", "~> 0.13.1"
-  spec.add_development_dependency "pry-byebug", "~> 3.9.0"
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rspec", "~> 3.9"
-  spec.add_development_dependency "rubocop"
-  spec.add_development_dependency "rubocop-performance"
-  spec.add_development_dependency "rubocop-rspec"
 end
